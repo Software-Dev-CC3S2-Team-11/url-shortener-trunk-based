@@ -2,8 +2,27 @@ import json
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+
+
+def read_config():
+    with open("config.json") as f:
+        config = json.load(f)
+        return config
+
+
+# Lee el HOST y PORT desde el archivo de configuración
+config = read_config()
+HOST, PORT = config["HOST"], config["PORT"]
+
+# Renderiza los html usando Jinja2
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
 
 # urls acortadas para simular una base de datos
 url_mapping = {
@@ -35,5 +54,4 @@ def read_config():
 
 if __name__ == "__main__":
     print('Versión 0')
-    read_config()
-    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("app:app", host=HOST, port=PORT, reload=True)
