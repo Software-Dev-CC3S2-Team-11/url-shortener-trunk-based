@@ -70,6 +70,18 @@ async def generated_url(request: Request, url: str = Form(...)):
     })
 
 
+@app.get('/')
+async def home(request: Request):
+    """
+    Renderiza la página principal donde
+    se encuentra el formulario que enviará
+    el url original
+    """
+    return templates.TemplateResponse('index.html', {
+        "request": request
+    })
+
+
 if __name__ == "__main__":
     print('Versión 0')
     uvicorn.run("app:app", host=HOST, port=PORT, reload=True)
