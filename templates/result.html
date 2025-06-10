@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acortador-Link || Link Acortado</title>
+  </head>
+  <body>
+    <h1>Acortador-Link</h1>
+    <p>Tu link acortado es: <a href="{{ short_url }}">{{ short_url }}</a></p>
+    <p>El link original es: {{ original_url }}</p>
+    <p>Visitas: {{ visits }}</p>
+    <p>Fecha de creación: {{ created_at }}</p>
+    <p>Fecha de expiración: {{ expires_at }}</p>
+    <a href="/">Volver al inicio</a>
+  </body>
+</html>
