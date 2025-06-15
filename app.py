@@ -84,4 +84,5 @@ async def home(request: Request):
 
 if __name__ == "__main__":
     print('Versión 0')
+
     uvicorn.run("app:app", host=HOST, port=PORT, reload=True)
