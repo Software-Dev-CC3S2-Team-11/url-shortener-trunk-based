@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+"""
+URL-SHORTENER V0
+"""
+
+import argparse
+>>>>>>> b29e564 (feat: add base function cli and logic for __main__)
 import json
 import uvicorn
 from fastapi import FastAPI, Request, Form
@@ -8,6 +16,15 @@ from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
+
+def cli() -> bool:
+    """
+    Parsea CLI flags 
+    :return: True si se pasan argumentos de línea de comandos,
+             False si no se pasan argumentos.
+    """
+    parser = argparse.ArgumentParser()
+    
 
 def read_config():
     with open("../config.json") as f:
@@ -83,6 +100,18 @@ async def home(request: Request):
 
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     print('Versión 0')
 
     uvicorn.run("app:app", host=HOST, port=PORT, reload=True)
+=======
+    """
+    Ejecuta el servidor uvicorn, si es que no se pasan
+    argumentos de línea de comandos.
+    """
+    if cli():
+        sys.exit(0)
+
+    print('V0')
+    uvicorn.run("app:app", host=HOST, port=PORT, reload=True)
+>>>>>>> b29e564 (feat: add base function cli and logic for __main__)
