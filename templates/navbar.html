@@ -1,7 +1,33 @@
-  <nav class="flex justify-between items-center bg-blue-500 p-4 text-white">
-    <a href="/" >URL SHORTENER</a>
-    <div>
-      <a href="/login" class="px-2">Login</a>
-      <a href="/register" class="px-2">Register</a>
-    </div>
-  </nav>
+<nav class="flex justify-between items-center bg-blue-500 p-4 text-white">
+  <a href="/" class="text-lg font-bold hover:underline">URL SHORTENER</a>
+  <div class="flex items-center space-x-4">
+    {% if username and username != 'unknown' %}
+    <span class="px-2">{{ username }}</span>
+    <a
+      href="/dashboard"
+      class="bg-white text-blue-500 font-semibold py-1 px-3 rounded hover:bg-gray-100 cursor-pointer transition"
+      >Dashboard</a
+    >
+    <form action="/auth/logout" method="post">
+      <button
+        type="submit"
+        class="bg-white text-blue-500 font-semibold py-1 px-3 rounded hover:bg-slate-300 cursor-pointer transition"
+      >
+        Logout
+      </button>
+    </form>
+    {% else %} {% if page != 'login' %}
+    <a
+      href="/login"
+      class="bg-white text-blue-500 font-semibold py-1 px-3 rounded hover:bg-slate-300 cursor-pointer transition"
+      >Login</a
+    >
+    {% endif %} {% if page != 'register' %}
+    <a
+      href="/register"
+      class="bg-white text-blue-500 font-semibold py-1 px-3 rounded hover:bg-slate-300 cursor-pointer transition"
+      >Register</a
+    >
+    {% endif %} {% endif %}
+  </div>
+</nav>
