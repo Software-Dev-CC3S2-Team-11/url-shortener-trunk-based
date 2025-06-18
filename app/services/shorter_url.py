@@ -42,3 +42,41 @@ def build_url_entity(original_url: str, username: str = 'unknown') -> URL:
     return URL(original=original_url, shorter=slug, username=username,
                visits=0, created_at=date["created_at"],
                expires_at=date["expires_at"])
+
+
+def get_by_shorter_url(db: Session, slug: str) -> str | None:
+    """Obtiene la URL original a partir del slug."""
+    url = db.query(URL).filter(URL.shorter == slug).first()
+    return url.original if url else None
+
+
+def get_urls_by_username(db: Session, username: str) -> list[URL]:
+    """Obtiene todas las URLs de un usuario."""
+    return db.query(URL).filter(URL.username == username).all()
+
+
+def insert_shorter_url(db: Session, url: URL) -> URL:
+    """Inserta una nueva URL acortada en la base de datos."""
+    url_found = db.query(URL).filter(
+        (URL.username == url.username) & (URL.shorter == url.shorter)).first()
+
+    if url_found:
+        url_found.created_at = datetime.now()
+        url_found.expires_at += timedelta(url_expiration_months*30)
+        db.commit()
+        return url_found
+
+    db.add(url)
+    db.commit()
+    return url
+
+
+def increment_visits_url(db: Session, slug: str):
+    """
+    Incrementa las vistas de una página al ser redireccionada
+    """
+
+    db.query(URL).filter(URL.shorter == slug).update(
+        {URL.visits: URL.visits + 1})
+
+    db.commit()
