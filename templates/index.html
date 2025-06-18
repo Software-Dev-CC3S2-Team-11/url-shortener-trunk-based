@@ -8,14 +8,16 @@
   <title>URL Shortener</title>
 </head>
 
-<body class="items-center justify-center flex h-screen bg-gray-200">
+<body class="flex flex-col h-screen bg-white">
+  {% include "navbar.html" %}
+
   <form action="/shorter" method="post"
     class="flex flex-col bg-gray-100 w-1/3 justify-center items-start m-auto rounded-md p-4 shadow-lg gap-y-4 ">
     <h1 class="text-black font-bold text-2xl">URL Shortener</h1>
-    <div class="flex flex-col gap-y-1 items-start">
+    <div class="flex flex-col gap-y-1 items-start w-full">
       <label for="url">Ingresa la URL que deseas acortar:</label>
       <input type="url" id="url" name="url" required placeholder="https://ejemplo123.com"
-        class="border-1 rounded-sm px-2" />
+        class="border-1 rounded-sm px-2 w-full" />
     </div>
     <button type="submit"
       class="border-1 border-blue-500  rounded-sm px-8 bg-blue-400 hover:border-blue-800 hover:bg-blue-700 hover:text-white">Shorten

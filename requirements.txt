@@ -6,3 +6,8 @@ pytest
 httpx
 sqlalchemy
 python-multipart
+psycopg2
+passlib
+python-jose
+bcrypt
+itsdangerous
