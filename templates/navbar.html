@@ -1,33 +1,31 @@
-<nav class="flex justify-between items-center bg-blue-500 p-4 text-white">
-  <a href="/" class="text-lg font-bold hover:underline">URL SHORTENER</a>
-  <div class="flex items-center space-x-4">
+<nav class="flex justify-between items-center mx-auto rounded-b-3xl bg-slate-400 text-white w-3/5 h-[6dvh] hover:h-[7dvh] duration-400 ease-in overflow-hidden shadow-lg">
+  <a href="/" class="text-lg font-bold px-8 ease-out hover:text-slate-700">URL SHORTENER</a>
+  <div class="flex items-center h-full">
     {% if username and username != 'unknown' %}
-    <span class="px-2">{{ username }}</span>
-    <a
-      href="/dashboard"
-      class="bg-white text-blue-500 font-semibold py-1 px-3 rounded hover:bg-gray-100 cursor-pointer transition"
-      >Dashboard</a
-    >
-    <form action="/auth/logout" method="post">
-      <button
-        type="submit"
-        class="bg-white text-blue-500 font-semibold py-1 px-3 rounded hover:bg-slate-300 cursor-pointer transition"
-      >
-        Logout
+    <a href="/dashboard" class="box-border cursor-pointer h-full place-content-center px-6 
+    {% if request.path == '/dashboard' %} bg-gray-100 text-blue-500 font-semibold px-3 border-y-4 border-t-gray-100 border-b-blue-700 hover:bg-slate-700 hover:border-slate-700 hover:text-white duration-200 ease-out  
+    {% else %} hover:bg-slate-700 hover:border-slate-700 hover:text-white duration-200 ease-out
+    {% endif %}">
+      Dashboard
+    </a>
+    <form action="/auth/logout" method="post" class="h-full">
+      <button type="submit" class="text-white hover:white font-semibold px-8 h-full hover:bg-red-500 h-full cursor-pointer transition">
+        Sign Out
       </button>
     </form>
-    {% else %} {% if page != 'login' %}
-    <a
-      href="/login"
-      class="bg-white text-blue-500 font-semibold py-1 px-3 rounded hover:bg-slate-300 cursor-pointer transition"
-      >Login</a
-    >
-    {% endif %} {% if page != 'register' %}
-    <a
-      href="/register"
-      class="bg-white text-blue-500 font-semibold py-1 px-3 rounded hover:bg-slate-300 cursor-pointer transition"
-      >Register</a
-    >
-    {% endif %} {% endif %}
+    {% else %} 
+    <a href="/login" class="box-border cursor-pointer h-full place-content-center px-6 
+    {% if request.path == '/login' %} bg-gray-100 text-blue-500 font-semibold px-3 border-y-4 border-t-gray-100 border-b-blue-700 hover:bg-slate-700 hover:border-slate-700 hover:text-white duration-200 ease-out
+    {% else %} hover:bg-slate-700 hover:border-slate-700 hover:text-white duration-200 ease-out
+    {% endif %}">
+      Sign In
+    </a>
+    <a href="/register" class="box-border cursor-pointer h-full place-content-center px-6 
+    {% if request.path == '/register' %} bg-gray-100 text-blue-500 font-semibold px-3 border-y-4 border-t-gray-100 border-b-blue-700 hover:bg-slate-700 hover:border-slate-700 hover:text-white duration-200 ease-out
+    {% else %} hover:bg-slate-700 hover:border-slate-700 hover:text-white duration-200 ease-out
+    {% endif %}">
+      Sign Up
+    </a>
+     {% endif %}
   </div>
 </nav>
