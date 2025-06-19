@@ -6,7 +6,10 @@ import argparse
 import sys
 import json
 import uvicorn
-from fastapi import FastAPI, Request, Form
+from database.db import get_db
+from sqlalchemy.orm import Session
+from fastapi import Depends
+from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -14,6 +17,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 from routes.auth import router as auth_router
 from services.auth import verify_token
+from services.shorter_url import get_urls_by_username
 from dotenv import load_dotenv
 from os import getenv
 
@@ -83,9 +87,12 @@ async def login(request: Request):
 
 
 @app.get('/dashboard', response_class=HTMLResponse)
-async def dashboard(request: Request):
+async def dashboard(request: Request, db: Session = Depends(get_db)):
     """
-    Renderiza la página de dashboard
+    Renderiza la página dashboard del usuario
+    Este endpoint verifica por un JWT almacenado en la sesión,
+    lo valida. Si es válido renderiza su dashboard, de lo contrario,
+    lo redirige a la página de inicio
     """
     token = request.session.get("token")
 
@@ -98,68 +105,17 @@ async def dashboard(request: Request):
         return RedirectResponse(url="/")
 
     username = payload.get("username")
+    username_urls = get_urls_by_username(db, username)
+    domain_url = f"http://{HOST}:{PORT}/"
 
     return templates.TemplateResponse('dash.html', {
         "request": request,
-        "username": username
+        "username": username,
+        "username_urls": username_urls,
+        "domain": domain_url
     })
 
-
-@app.post('/shorter', response_class=HTMLResponse)
-async def generated_url(request: Request, url: str = Form(...)):
-    """
-    Toma la url enviada desde el form del index,
-    genera un slug único, almacena los datos
-    en la base de datos y luego devuelve una
-    plantilla html con los datos de la url generada
-    """
-    slug = "asd"  # función que genera un slug a partir del url
-    shortened_url = f"http://{HOST}:{PORT}/{slug}"
-
-    # Aqui se almacena en la base de datos
-
-    # renderiza el template html con la información de la nueva url acortada
-    return templates.TemplateResponse("result.html", {
-        "request": request,
-        "short_url": shortened_url,
-        "original_url": url,
-        "created_at": "6/6/2025",
-        "expires_at": "6/8/2025",
-        "visits": 0
-    })
-
-
-@app.get('/')
-async def home(request: Request):
-    """
-    Renderiza la página principal donde
-    se encuentra el formulario que enviará
-    el url original
-    """
-    token = request.session.get("token")
-    if token:
-        payload = verify_token(token)
-        if payload:
-            return RedirectResponse(url="/dashboard")
-
-    return templates.TemplateResponse('index.html', {
-        "request": request
-    })
-
-
-@app.get('/{slug}')
-async def redirect_url(slug: str):
-    """
-    Busca en la base de datos la url
-    asociada al slug(url_acortada)
-    y la redirecciona a su url original
-    """
-
-    # esto simula la busqueda del slug en la base de datos
-    if slug in url_mapping.keys():
-        # redirecciona a la url original
-        return RedirectResponse(url_mapping[slug])
-    return {"error": "url not found"}
+app.include_router(url_router)
 
 
 def cli() -> bool:
