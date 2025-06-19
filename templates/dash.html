@@ -11,42 +11,43 @@
         rel="stylesheet">
     <title>URL Shortener | Dashboard</title>
 </head>
-<body class="flex flex-col h-screen bg-slate-950 font-[Inter]">
+<body class="flex flex-col h-screen space-y-16 bg-slate-950 font-[Inter]">
     {% include "navbar.html" %}
-    <div class="mx-auto min-w-3/5 py-4 space-y-4">
+    <div class="mx-auto text-white min-w-3/5 py-4 space-y-4">
         <h1 class="text-2xl tracking-tight font-semibold">Dashboard de {{username}}</h1>
         <hr class="border-gray-200" />
         <div class="space-y-8">
             {% if username_urls %}
-            <table class="min-w-full bg-white shadow rounded-sm overflow-hidden">
-                <thead class="bg-gray-200 text-left">
+            <table class="min-w-full bg-slate-950 shadow rounded-sm overflow-hidden">
+                <thead class="bg-yellow-400 text-left">
                     <tr>
-                        <th>Original URL</th>
+                        <th class="pl-4">Original URL</th>
                         <th>Short URL</th>
-                        <th>Visitas</th>
+                        <th class="pr-4">Visitas</th>
                         <th>Fecha de Creación</th>
-                        <th>Expiración</th>
+                        <th class="pr-4">Expiración</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for url_data in username_urls %}
-                    <tr class="border-t-gray-200">
-                        <td><a class="text-blue-600" href="{{ url_data.original }}" target="_blank">{{
+                    <tr class="overflow-hidden">
+                        <td class="pl-4"><a class="text-blue-600 hover:text-blue-400" href="{{ url_data.original }}" target="_blank">{{
                                 url_data.original }}</a></td>
-                        <td><a class="text-blue-600" href="{{ domain ~ url_data.shorter }}" target="_blank">{{
+                        <td><a class="text-blue-600 hover:text-blue-400" href="{{ domain ~ url_data.shorter }}" target="_blank">{{
                                 domain ~ url_data.shorter }}</a>
                         </td>
                         <td>{{ url_data.visits }}</td>
                         <td>{{ url_data.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
-                        <td>{{ url_data.expires_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td class="pr-4">{{ url_data.expires_at.strftime('%Y-%m-%d %H:%M') }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
             {% else %}
-            <h2 class="text-xl">Todavía no has acortado ninguna URL</h2>
+            <h2 class="text-xl text-white">Todavía no has acortado ninguna URL</h2>
             {% endif %}
-            <a class="border-1 border-blue-400 rounded-sm font-semibold px-8 py-2 bg-blue-100 shadow-md hover:border-blue-800 hover:bg-blue-700 hover:text-white hover:shadow-lg "
+            <hr class="border-0.5 border-white">
+            <a class="border-1 border-yellow-300 rounded-sm px-8 py-0.5 bg-yellow-200 text-black hover:border-yellow-800 hover:bg-yellow-500 hover:text-white duration-200 ease-in"
                 href="/">Acortar URL</a>
         </div>
     </div>
