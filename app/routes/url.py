@@ -46,19 +46,15 @@ async def generated_url(
     url_from_db = insert_shorter_url(db=db, url=url_shorter)
 
     # renderiza el template html con la información de la nueva url acortada
-
-    return templates.TemplateResponse(
-        "result.html",
-        {
-            "request": request,
-            "short_url": shortened_url,
-            "original_url": url_shorter.original,
-            "created_at": url_from_db.created_at,
-            "expires_at": url_from_db.expires_at,
-            "visits": url_from_db.visits,
-            "username": username,
-        },
-    )
+    return templates.TemplateResponse("result.html", {
+        "request": request,
+        "short_url": shortened_url,
+        "original_url": url_shorter.original,
+        "created_at": url_from_db.created_at,
+        "expires_at": url_from_db.expires_at,
+        "visits": url_from_db.visits,
+        "username": username
+    })
 
 
 @router.get('/')
