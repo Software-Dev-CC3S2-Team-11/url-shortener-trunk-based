@@ -11,9 +11,10 @@ passlib
 python-jose
 bcrypt
 itsdangerous
-pytest-asyncio
+flake8
 pytest-cov
 pytest-mock
+pytest-asynciopytest-asyncio
 httpx
 flake8
 

@@ -1,12 +1,11 @@
 import pytest
-from app import app
+from app.app import app
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock
 from database.db import get_db
 from services.auth import bcrypt_context
 from models.User import User
 from services import auth
-
 
 
 @pytest.fixture(autouse=True)
