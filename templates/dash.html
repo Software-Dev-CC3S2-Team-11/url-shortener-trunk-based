@@ -15,7 +15,7 @@
         <h1 class="text-2xl tracking-tight font-semibold">Bienvenido, {{username}}</h1>
         <hr class="border-gray-200" />
         <div class="space-y-8">
-            {% if username_urls and username_urls.length() != 0 %}
+            {% if username_urls %}
             <table class="min-w-full bg-white shadow rounded-sm overflow-hidden">
                 <thead class="bg-gray-200 text-left">
                     <tr>
@@ -29,11 +29,14 @@
                 <tbody>
                     {% for url_data in username_urls %}
                     <tr class="border-t-gray-200">
-                        <td><a class="text-blue-600" href="{{ url_data.original_url }}">{{ url_data.original }}</a></td>
-                        <td><a class="text-blue-600" href="{{ url_data.shorter }}">{{ url_data.shorter }}</a></td>
+                        <td><a class="text-blue-600" href="{{ url_data.original }}" target="_blank">{{
+                                url_data.original }}</a></td>
+                        <td><a class="text-blue-600" href="{{ domain ~ url_data.shorter }}" target="_blank">{{
+                                domain ~ url_data.shorter }}</a>
+                        </td>
+                        <td>{{ url_data.visits }}</td>
                         <td>{{ url_data.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                         <td>{{ url_data.expires_at.strftime('%Y-%m-%d %H:%M') }}</td>
-                        <td>{{ url_data.visits }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
