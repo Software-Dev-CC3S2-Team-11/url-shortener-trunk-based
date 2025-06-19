@@ -11,16 +11,18 @@
     rel="stylesheet">
   <title>URL Shortener</title>
 </head>
-<body class="flex flex-col h-screen  bg-slate-950 font-[Inter]">
+<body class="flex flex-col h-screen space-y-16 bg-slate-950 font-[Inter]">
   {% include "navbar.html" %}
+
   <form action="/shorter" method="post"
-    class="flex flex-col bg-gray-100 w-3/5 justify-center items-start m-auto rounded-md p-4 shadow-lg gap-y-4">
-    <h1 class="text-black font-bold text-2xl">URL Shortener</h1>
-    <div class="flex flex-col gap-y-1 items-start w-full">
-      <label for="url">Ingresa la URL que deseas acortar:</label>
-      <input type="url" id="url" name="url" required placeholder="https://ejemplo123.com"class="border-1 rounded-sm px-2 w-full" />
+    class="flex flex-col bg-slate-950 text-white w-3/5 items-start mx-auto rounded-md p-4 shadow-lg space-y-4">
+    <h1 class="font-bold text-2xl">Acorta una URL</h1>
+    <hr class="border-0.5 w-full"/>
+    <div class="flex flex-col space-y-2 items-start w-full">
+      <label for="url" class="tracking-wide ">Ingresa el enlace que deseas acortar:</label>
+      <input type="url" id="url" name="url" required placeholder="https://ejemplo123.com"class="border-1 border-gray-400 hover:border-white rounded-sm px-4 py-0.5 w-full" />
     </div>
-    <button type="submit" class="border-1 border-blue-500  rounded-sm px-8 bg-blue-400 hover:border-blue-800 hover:bg-blue-700 hover:text-white">Shorten
+    <button type="submit" class="border-1 border-yellow-300 rounded-sm px-8 py-0.5 bg-yellow-200 text-black hover:border-yellow-800 hover:bg-yellow-500 hover:text-white duration-200 ease-in">Acortar
       URL
     </button>
   </form>
