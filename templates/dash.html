@@ -1,14 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>URL Shortener</title>
+    <title>URL Shortener | Dashboard</title>
 </head>
+
 <body class="flex flex-col h-screen bg-white">
     {% include "dashboard_navbar.html" %}
 
-    <h1>Bienvenido, {{username}}</h1>
+    <div class="mx-auto min-w-4/5 py-4 space-y-4">
+        <h1 class="text-2xl tracking-tight font-semibold">Bienvenido, {{username}}</h1>
+        <hr class="border-gray-200" />
+        <div class="space-y-8">
+            {% if username_urls %}
+            <table class="min-w-full bg-white shadow rounded-sm overflow-hidden">
+                <thead class="bg-gray-200 text-left">
+                    <tr>
+                        <th>Original URL</th>
+                        <th>Short URL</th>
+                        <th>Visitas</th>
+                        <th>Fecha de Creación</th>
+                        <th>Expiración</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for url_data in username_urls %}
+                    <tr class="border-t-gray-200">
+                        <td><a class="text-blue-600" href="{{ url_data.original }}" target="_blank">{{
+                                url_data.original }}</a></td>
+                        <td><a class="text-blue-600" href="{{ domain ~ url_data.shorter }}" target="_blank">{{
+                                domain ~ url_data.shorter }}</a>
+                        </td>
+                        <td>{{ url_data.visits }}</td>
+                        <td>{{ url_data.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ url_data.expires_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h2 class="text-xl">Todavía no has acortado ninguna URL</h2>
+            {% endif %}
+            <a class="border-1 border-blue-400 rounded-sm font-semibold px-8 py-2 bg-blue-100 shadow-md hover:border-blue-800 hover:bg-blue-700 hover:text-white hover:shadow-lg "
+                href="/">Acortar URL</a>
+        </div>
+    </div>
+
+
 </body>
+
 </html>
