@@ -71,5 +71,6 @@ async def logout_user(request: Request):
     Cierra la sesión del usuario eliminando el token de la sesión.
     Redirige al usuario a la página de inicio de sesión.
     """
+    
     request.session.clear()
-    return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
