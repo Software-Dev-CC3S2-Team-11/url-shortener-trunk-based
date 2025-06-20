@@ -18,9 +18,10 @@ def generate_slug(original_url: str, username: str):
 
 def generate_date():
     """
-    Devuelve la metadata de la fecha de creación y
-    expiración (created_at y expires_at)
+    Devuelve la metadata de la fecha de creación
+    y expiración (created_at y expires_at)
     """
+
     created_at = datetime.now()
 
     days = url_expiration_months * 30
@@ -30,18 +31,24 @@ def generate_date():
     return {"created_at": created_at, "expires_at": expirest_at}
 
 
-def build_url_entity(original_url: str, username: str = 'unknown') -> URL:
+def build_url_entity(original_url: str, username: str = "unknown") -> URL:
     """
     Se le pasa la url extendida, username, y devuelve un objeto de la
     clase URL que contiene la url hasheada con las fechas de creación
     y expiración.
     """
+
     slug = generate_slug(original_url, username=username)
     date = generate_date()
 
-    return URL(original=original_url, shorter=slug, username=username,
-               visits=0, created_at=date["created_at"],
-               expires_at=date["expires_at"])
+    return URL(
+        original=original_url,
+        shorter=slug,
+        username=username,
+        visits=0,
+        created_at=date["created_at"],
+        expires_at=date["expires_at"],
+    )
 
 
 def get_by_shorter_url(db: Session, slug: str) -> str | None:

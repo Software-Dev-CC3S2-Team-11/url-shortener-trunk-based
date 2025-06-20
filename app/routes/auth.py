@@ -8,18 +8,19 @@ from sqlalchemy.orm import Session
 from models.User import User
 import services.auth as auth_service
 
+
 router = APIRouter(
     prefix='/auth',
     tags=['auth'],
 )
 
+# Ruta Raiz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 templates = Jinja2Templates(directory=BASE_DIR/"templates")
 
 
 @router.post('/register', status_code=status.HTTP_201_CREATED)
-async def register_user(request: Request,
-                        email: str = Form(...),
+async def register_user(request: Request, email: str = Form(...),
                         password: str = Form(...),
                         username: str = Form(...),
                         db: Session = Depends(get_db)):
@@ -29,8 +30,10 @@ async def register_user(request: Request,
 
     hashed_password = auth_service.bcrypt_context.hash(password)
     new_user = User(email=email, password=hashed_password, username=username)
+
     db.add(new_user)
     db.commit()
+
     token = auth_service.create_access_token(email=email, username=username)
     request.session['token'] = token
 
@@ -38,14 +41,16 @@ async def register_user(request: Request,
 
 
 @router.post("/login")
-async def login_user(request: Request,
-                     email: str = Form(...),
-                     password: str = Form(...),
-                     db: Session = Depends(get_db)):
+async def login_user(
+    request: Request,
+    email: str = Form(...),
+    password: str = Form(...),
+    db: Session = Depends(get_db),
+):
     """
     Inicia sesión con el usuario y contraseña proporcionados.
-    Redirige al usuario a la página de dashboard
-    si las credenciales son válidas.
+    Redirige al usuario a la página de dashboard si
+    las credenciales son válidas.
     """
 
     user = db.query(User).filter(User.email == email).first()
@@ -56,7 +61,7 @@ async def login_user(request: Request,
                                            "error": "Invalid credentials"})
 
     token = auth_service.create_access_token(user.email, user.username)
-    request.session['token'] = token
+    request.session["token"] = token
     return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
 
 

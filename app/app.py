@@ -1,26 +1,19 @@
-"""
-URL-SHORTENER V0
-"""
-
 import argparse
 from pathlib import Path
 import sys
 import uvicorn
-from database.db import get_db
-from sqlalchemy.orm import Session
-from fastapi import Depends
 from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 from routes.auth import router as auth_router
 from services.auth import verify_token
-from services.shorter_url import get_urls_by_username
 from dotenv import load_dotenv
 from os import getenv
 from core.settings import HOST, PORT
 from routes.url import router as url_router
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.requests import Request
+
 
 load_dotenv()
 
@@ -32,8 +25,8 @@ app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET)
 app.include_router(auth_router)
 
-# app.mount("/static", StaticFiles(directory="../static"), name="static")
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+# Path de la raiz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
 templates = Jinja2Templates(directory=BASE_DIR/"templates")
 
 
@@ -70,12 +63,9 @@ async def login(request: Request):
 
 
 @app.get('/dashboard', response_class=HTMLResponse)
-async def dashboard(request: Request, db: Session = Depends(get_db)):
+async def dashboard(request: Request):
     """
-    Renderiza la página dashboard del usuario
-    Este endpoint verifica por un JWT almacenado en la sesión,
-    lo valida. Si es válido renderiza su dashboard, de lo contrario,
-    lo redirige a la página de inicio
+    Renderiza la página de dashboard
     """
     token = request.session.get("token")
 
@@ -88,14 +78,10 @@ async def dashboard(request: Request, db: Session = Depends(get_db)):
         return RedirectResponse(url="/")
 
     username = payload.get("username")
-    username_urls = get_urls_by_username(db, username)
-    domain_url = f"http://{HOST}:{PORT}/"
 
     return templates.TemplateResponse('dash.html', {
         "request": request,
-        "username": username,
-        "username_urls": username_urls,
-        "domain": domain_url
+        "username": username
     })
 
 app.include_router(url_router)
@@ -108,10 +94,15 @@ def cli() -> bool:
              False si no se pasan argumentos.
     """
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument("--status", action="store_true",
-                        help="Verifica si el servidor está corriendo")
-    parser.add_argument("--version", action="store_true",
-                        help="Muestra la versión del servidor")
+
+    parser.add_argument(
+        "--status", action="store_true",
+        help="Verifica si el servidor está corriendo"
+    )
+    parser.add_argument(
+        "--version", action="store_true",
+        help="Muestra la versión del servidor"
+    )
 
     args, _ = parser.parse_known_args()
 
