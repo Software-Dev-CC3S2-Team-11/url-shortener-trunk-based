@@ -30,4 +30,4 @@ def test_version():
     """
     Verifica que el comando --version retorne la versión del servidor.
     """
-    assert run_cli("--version") == "-0"
+    assert run_cli("--version") == "-1.0.1"
