@@ -9,10 +9,14 @@ from fastapi import APIRouter, HTTPException
 from services.shorter_url import get_by_shorter_url, insert_shorter_url
 from services.shorter_url import increment_visits_url, build_url_entity
 from services.auth import verify_token
+from pathlib import Path
 
 router = APIRouter()
 
-templates = Jinja2Templates(directory="../templates")
+# Ruta Raiz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+templates = Jinja2Templates(directory=BASE_DIR/"templates")
 
 
 @router.post("/shorter", response_class=HTMLResponse)
@@ -42,6 +46,7 @@ async def generated_url(
     url_from_db = insert_shorter_url(db=db, url=url_shorter)
 
     # renderiza el template html con la información de la nueva url acortada
+
     return templates.TemplateResponse(
         "result.html",
         {
@@ -70,7 +75,7 @@ async def home(request: Request):
         payload = verify_token(token)
         username = payload.get("username")
 
-    return templates.TemplateResponse('index.html', {
+    return templates.TemplateResponse(request, 'index.html', {
         "request": request, "username": username
     })
 

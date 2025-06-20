@@ -21,6 +21,7 @@ def generate_date():
     Devuelve la metadata de la fecha de creación
     y expiración (created_at y expires_at)
     """
+
     created_at = datetime.now()
 
     days = url_expiration_months * 30
@@ -36,6 +37,7 @@ def build_url_entity(original_url: str, username: str = "unknown") -> URL:
     clase URL que contiene la url hasheada con las fechas de creación
     y expiración.
     """
+
     slug = generate_slug(original_url, username=username)
     date = generate_date()
 

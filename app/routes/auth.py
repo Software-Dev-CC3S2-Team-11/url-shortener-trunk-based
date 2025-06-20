@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from models.User import User
 import services.auth as auth_service
 
+
 router = APIRouter(
     prefix='/auth',
     tags=['auth'],
@@ -55,9 +56,9 @@ async def login_user(
     user = db.query(User).filter(User.email == email).first()
     if not user or not auth_service.bcrypt_context.verify(password,
                                                           user.password):
-        return templates.TemplateResponse(
-            "login.html", {"request": request, "error": "Invalid credentials"}
-        )
+        return templates.TemplateResponse("login.html",
+                                          {"request": request,
+                                           "error": "Invalid credentials"})
 
     token = auth_service.create_access_token(user.email, user.username)
     request.session["token"] = token

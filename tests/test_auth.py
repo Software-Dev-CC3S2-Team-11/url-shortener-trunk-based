@@ -1,5 +1,4 @@
 import pytest
-from app import app
 from fastapi import status
 from jose import jwt
 from services import auth
