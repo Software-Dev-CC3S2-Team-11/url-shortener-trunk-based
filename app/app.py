@@ -3,7 +3,6 @@ URL-SHORTENER V0
 """
 
 import argparse
-from pathlib import Path
 import sys
 import uvicorn
 from database.db import get_db
@@ -11,6 +10,7 @@ from sqlalchemy.orm import Session
 from fastapi import Depends
 from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 from routes.auth import router as auth_router
 from services.auth import verify_token
@@ -31,10 +31,9 @@ VERSION = "-0"
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET)
 app.include_router(auth_router)
-
-# app.mount("/static", StaticFiles(directory="../static"), name="static")
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-templates = Jinja2Templates(directory=BASE_DIR/"templates")
+# Renderiza los html usando Jinja2
+app.mount("/static", StaticFiles(directory="../static"), name="static")
+templates = Jinja2Templates(directory="../templates")
 
 
 @app.get('/register', response_class=HTMLResponse)

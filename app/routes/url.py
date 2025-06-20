@@ -6,8 +6,7 @@ from fastapi.responses import RedirectResponse
 from fastapi import Request, Form, Depends
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, HTTPException
-from services.shorter_url import get_by_shorter_url, insert_shorter_url
-from services.shorter_url import increment_visits_url, build_url_entity
+from services.shorter_url import get_by_shorter_url, insert_shorter_url, increment_visits_url, build_url_entity
 from services.auth import verify_token
 
 router = APIRouter()
@@ -59,11 +58,14 @@ async def home(request: Request):
     se encuentra el formulario que enviará
     el url original
     """
+
     token = request.session.get('token')
     username = 'unknown'
+
     if token:
         payload = verify_token(token)
         username = payload.get("username")
+
     return templates.TemplateResponse('index.html', {
         "request": request, "username": username
     })
