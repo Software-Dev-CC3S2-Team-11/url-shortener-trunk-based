@@ -16,9 +16,10 @@
 
   <form action="/shorter" method="post"
     class="flex flex-col bg-slate-950 text-white w-3/5 items-start mx-auto rounded-md p-4 shadow-lg space-y-4">
-    <h1 class="text-3xl font-bold">Bienvenido, {{ username }}</h1>
+    
     <h1 class="font-semibold text-2xl">Acorta una URL</h1>
     <hr class="border-0.5 w-full"/>
+    <h2 class="text-xl font-bold">Bienvenido, {{ username }}</h2>
     <div class="flex flex-col space-y-2 items-start w-full">
       <label for="url" class="tracking-wide ">Ingresa el enlace que deseas acortar:</label>
       <input type="url" id="url" name="url" required placeholder="https://ejemplo123.com"class="border-1 border-gray-400 hover:border-white rounded-sm px-4 py-0.5 w-full" />
