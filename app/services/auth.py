@@ -17,7 +17,7 @@ def create_access_token(email: str, username: str):
     Crea un token JWT con el email y el nombre de usuario del usuario
     """
     encode = {'email': email, 'username': username}
-    expires = datetime.now() + timedelta(days=30)
+    expires = datetime.utcnow() + timedelta(days=30)
     encode.update({'exp': expires})
     return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
 

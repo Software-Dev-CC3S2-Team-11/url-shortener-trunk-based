@@ -2,11 +2,15 @@ import argparse
 from pathlib import Path
 import sys
 import uvicorn
+from database.db import get_db
+from sqlalchemy.orm import Session
+from fastapi import Depends
 from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 from routes.auth import router as auth_router
 from services.auth import verify_token
+from services.shorter_url import get_urls_by_username
 from dotenv import load_dotenv
 from os import getenv
 from core.settings import HOST, PORT
@@ -63,9 +67,12 @@ async def login(request: Request):
 
 
 @app.get('/dashboard', response_class=HTMLResponse)
-async def dashboard(request: Request):
+async def dashboard(request: Request, db: Session = Depends(get_db)):
     """
-    Renderiza la página de dashboard
+    Renderiza la página dashboard del usuario
+    Este endpoint verifica por un JWT almacenado en la sesión,
+    lo valida. Si es válido renderiza su dashboard, de lo contrario,
+    lo redirige a la página de inicio
     """
     token = request.session.get("token")
 
@@ -78,10 +85,14 @@ async def dashboard(request: Request):
         return RedirectResponse(url="/")
 
     username = payload.get("username")
+    username_urls = get_urls_by_username(db, username)
+    domain_url = f"http://{HOST}:{PORT}/"
 
     return templates.TemplateResponse('dash.html', {
         "request": request,
-        "username": username
+        "username": username,
+        "username_urls": username_urls,
+        "domain": domain_url
     })
 
 app.include_router(url_router)

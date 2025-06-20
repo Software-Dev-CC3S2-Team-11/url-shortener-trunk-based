@@ -19,7 +19,9 @@
     
     <h1 class="font-semibold text-2xl">Acorta una URL</h1>
     <hr class="border-0.5 w-full"/>
+    {% if username and username != 'unknown' %}
     <h2 class="text-xl font-bold">Bienvenido, {{ username }}</h2>
+    {% endif %}
     <div class="flex flex-col space-y-2 items-start w-full">
       <label for="url" class="tracking-wide ">Ingresa el enlace que deseas acortar:</label>
       <input type="url" id="url" name="url" required placeholder="https://ejemplo123.com"class="border-1 border-gray-400 hover:border-white rounded-sm px-4 py-0.5 w-full" />

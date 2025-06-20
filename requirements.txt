@@ -16,3 +16,4 @@ pytest-cov
 pytest-mock
 httpx
 flake8
+dotenv
